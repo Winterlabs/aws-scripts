@@ -11,6 +11,7 @@ import subprocess
 def find_key_value(list, key):
     for item in list:
         if item["Key"]==key:
+            #print "found key! %s" % (item["Value"])
             return item["Value"]
 
 
@@ -30,7 +31,6 @@ def printTable(myDict, colList=None):
 
 
 outputlist = []
-outputdict = {}
 
 cmd = 'aws ec2 describe-instances --output json'
 
@@ -41,9 +41,33 @@ awsdata = json.loads(jsondata)
 
 for res in awsdata["Reservations"]:
     for ii in res["Instances"]:
-        print(ii["InstanceId"])
-        print(find_key_value(ii["Tags"],"Name"))
-#        print(ii["Instance"])
+        #print(ii["InstanceId"])
+        #print(find_key_value(ii["Tags"],"Name"))
+        #print(ii["Instance"])
+
+        #pprint(ii)
+
+        #print "-----------------------------------------"
+        #pprint(ii["Tags"])
+        #print "-----------------------------------------"
+
+        outputdict = {}
+
+        outputdict["InstanceName"]=find_key_value(ii["Tags"], "Name")
+        outputdict["InstanceId"]=ii["InstanceId"]
+        outputdict["InstanceType"]=ii["InstanceType"]
+        outputdict["State"]=ii["State"]["Name"]
+        outputdict["StateReason"]=ii["StateReason"]["Code"]
+        #outputdict["Platform"]=ii["Platform"]
+
+        #pprint(outputdict)
+
+    outputlist.append(outputdict)
+
+
+printTable(outputlist, ["InstanceName","InstanceId","InstanceType","State","StateReason"])
+
+#pprint(outputlist)
 
 
 '''
