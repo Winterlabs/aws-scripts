@@ -68,12 +68,3 @@ for res in awsdata["Reservations"]:
 printTable(outputlist, ["InstanceName","InstanceId","InstanceType","State","StateReason"])
 
 #pprint(outputlist)
-
-
-'''
-pprint(j)
-
-print j
-
-#instance = json.loads()
-'''
